@@ -1,3 +1,4 @@
+import 'package:calculator_app/provider/calculation_provider.dart';
 import 'package:calculator_app/utils/constants.dart';
 import 'package:flutter/material.dart' hide BoxShadow, BoxDecoration;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
@@ -30,6 +31,7 @@ class CalculatorButton extends StatefulWidget {
 
 class _CalculatorButtonState extends State<CalculatorButton> {
   bool isPassed = false;
+
   @override
   Widget build(BuildContext context) {
     final borderRadius = widget.shape == Shape.circle
@@ -43,6 +45,15 @@ class _CalculatorButtonState extends State<CalculatorButton> {
       }),
       onPointerUp: (_) => setState(() {
         isPassed = false;
+
+        // ignore: prefer_typing_uninitialized_variables
+        var ref;
+        final provider = ref.read(calculationProvider.notifier);
+        if (widget.shape == Shape.square) {
+          provider.addSign(widget.text);
+        } else {
+          provider.addNumber(widget.text);
+        }
       }),
       child: AnimatedContainer(
         duration: const Duration(microseconds: 100),
